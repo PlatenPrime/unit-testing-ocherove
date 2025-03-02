@@ -1,5 +1,12 @@
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import { IPasswordVerifier, PasswordVerifier, Rule } from "./verifyPassword";
+
+const oneUpperCaseRule: Rule = (input) => {
+  return {
+    passed: input.toLowerCase() !== input,
+    reason: "should have at least one upper case letter",
+  };
+};
 
 test("pass verifier, with a failing rule, has an error message based on the rule.reason", () => {
   const verifier = makeVerifierWithFailingRule("fake reason");
@@ -33,6 +40,20 @@ test(" pass verifier, with a passing and failing rule, has an error message belo
   const errors = verifier.verify("any value");
 
   expect(errors[0]).toContain("fake reason");
+});
+
+describe("one uppercase rule", () => {
+  test.each([
+    ["Abc", true],
+    ["aBc", true],
+  ])("given  %s, %s", (input, expected) => {
+    const result = oneUpperCaseRule(input);
+    expect(result.passed).toBe(expected);
+  });
+  test.each([["abc", false]])("given  %s, %s", (input, expected) => {
+    const result = oneUpperCaseRule(input);
+    expect(result.passed).toBe(expected);
+  });
 });
 
 function makeFailingRule(reason: string): Rule {
