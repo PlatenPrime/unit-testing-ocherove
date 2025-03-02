@@ -33,6 +33,9 @@ export class PasswordVerifier implements IPasswordVerifier {
   }
 
   verify(input: string) {
+    if (this.rules.length === 0) {
+      throw new Error("There are no rules configured");
+    }
     const errors: string[] = [];
     this.rules.forEach((rule) => {
       const result = rule(input);
