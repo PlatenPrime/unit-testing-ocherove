@@ -1,3 +1,6 @@
+const SUNDAY = 0,
+  SATURDAY = 6;
+
 export interface Rule {
   (input: string): {
     passed: boolean;
@@ -5,7 +8,15 @@ export interface Rule {
   };
 }
 
-export const verifyPassword = (input: string, rules: Rule[]): string[] => {
+export interface Verifier2 {
+  (input: string, rules: Rule[], currentDay: number): string[];
+}
+
+export const verifyPassword2: Verifier2 = (input, rules, currentDay) => {
+  if ([SUNDAY, SATURDAY].includes(currentDay)) {
+    throw Error("Its the weekend");
+  }
+
   const errors: string[] = [];
   rules.forEach((rule) => {
     const result = rule(input);
