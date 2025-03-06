@@ -1,3 +1,4 @@
+
 const SUNDAY = 0,
   SATURDAY = 6;
 
@@ -8,12 +9,13 @@ export interface Rule {
   };
 }
 
-interface Verifier {
+export interface Verifier {
   verify(input: string): { passed: boolean; reason: string }[];
 }
 
 
-class VerifierImpl implements Verifier {
+
+export class PasswordVerifier implements Verifier {
   private rules: Rule[];
   private dayOfWeekFn: () => number;
 
