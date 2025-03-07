@@ -17,3 +17,10 @@ interface PasswordError {
   passed: boolean;
   reason: string;
 }
+
+
+interface PasswordVerifierInterface{
+  rules: Rule[];
+  timeProvider: TimeProviderInterface;
+
+}
