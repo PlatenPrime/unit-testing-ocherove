@@ -1,7 +1,6 @@
 import moment from "moment";
 
-const SUNDAY = 0,
-  SATURDAY = 6;
+
 
 export interface Rule {
   (input: string): {
@@ -13,9 +12,9 @@ export interface Rule {
 export const verifyPassword = (input: string, rules: Rule[]): string[] => {
   const dayOfWeek = moment().day();
 
-  if ([SUNDAY, SATURDAY].includes(dayOfWeek)) {
-    throw Error("Its the weekend");
-  }
+  // if ([SUNDAY, SATURDAY].includes(dayOfWeek)) {
+  //   throw Error("Its the weekend");
+  // }
 
   const errors: string[] = [];
   rules.forEach((rule) => {
