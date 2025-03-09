@@ -1,3 +1,5 @@
+import { CurriedFunction3 } from "lodash";
+import curry from "lodash/curry";
 import * as log from "./complicated-logger";
 
 interface Rule {
@@ -16,6 +18,8 @@ interface Verifier1 {
 interface Verifier2 {
   (input: string, rules: Rule[], logger: Logger): boolean;
 }
+
+type Verifier3 = CurriedFunction3<Rule[], Logger, string, boolean>;
 
 export const verifyPassword: Verifier1 = (input, rules) => {
   const failed = rules
@@ -45,3 +49,18 @@ export const verifyPassword2: Verifier2 = (input, rules, logger) => {
   logger.info && logger.info("FAIL");
   return false;
 };
+
+export const verifyPassword3: Verifier3 = curry(
+  (rules: Rule[], logger: Logger, input: string) => {
+    const failed = rules
+      .map((rule) => rule(input))
+      .filter((result) => result === false);
+
+    if (failed.length === 0) {
+      logger.info && logger.info("PASSED");
+      return true;
+    }
+    logger.info && logger.info("FAIL");
+    return false;
+  }
+);
